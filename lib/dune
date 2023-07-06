@@ -1,0 +1,4 @@
+(library
+ (name tabler_libs)
+ (libraries mm result)
+)

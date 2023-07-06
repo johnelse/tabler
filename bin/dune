@@ -1,0 +1,9 @@
+(executables
+ (names tabler)
+ (libraries tabler_libs)
+)
+
+(install
+ (section bin)
+ (files (tabler.exe as tabler))
+)
