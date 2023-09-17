@@ -1,6 +1,6 @@
 (executables
  (names tabler)
- (libraries tabler_libs)
+ (libraries cmdliner tabler_libs)
 )
 
 (install
