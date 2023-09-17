@@ -1,10 +1,21 @@
 open Cmdliner
+open Tabler_libs
 
-let tabler samples waves start_waveform end_waveform =
+let tabler samples waves start_waveform_str end_waveform_str =
+  let start_waveform =
+    match Generator.waveform_of_string start_waveform_str with
+    | Some waveform -> waveform
+    | None -> failwith ("Unrecognised waveform: " ^ start_waveform_str)
+  in
+  let end_waveform =
+    match Generator.waveform_of_string end_waveform_str with
+    | Some waveform -> waveform
+    | None -> failwith ("Unrecognised waveform: " ^ end_waveform_str)
+  in
   Printf.eprintf "samples = %d\n" samples;
   Printf.eprintf "waves = %d\n" waves;
-  Printf.eprintf "start = %s\n" start_waveform;
-  Printf.eprintf "end = %s\n" end_waveform
+  Printf.eprintf "start = %s\n" (Generator.string_of_waveform start_waveform);
+  Printf.eprintf "end = %s\n" (Generator.string_of_waveform end_waveform)
 
 let samples =
   let doc = "Number of samples per waveform" in
