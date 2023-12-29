@@ -1,4 +1,4 @@
 (library
  (name tabler_libs)
- (libraries mm result)
+ (libraries mm ocaml-lua result)
 )

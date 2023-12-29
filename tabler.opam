@@ -13,6 +13,7 @@ depends: [
   "dune" {>= "2.0"}
   "cmdliner" {>= "1.1.0"}
   "mm" {>= "0.8.0"}
+  "ocaml-lua"
   "result"
   "ounit" {with-test}
 ]

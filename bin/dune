@@ -1,6 +1,6 @@
 (executables
  (names tabler)
- (libraries cmdliner tabler_libs)
+ (libraries cmdliner ocaml-lua tabler_libs)
 )
 
 (install
