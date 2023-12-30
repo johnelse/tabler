@@ -18,11 +18,9 @@ let string_of_waveform = function
   | Square -> "square"
   | Triangle -> "triangle"
 
-type generator_fn = float -> float
-
 type generator =
   | Waveform of waveform
-  | Custom of generator_fn
+  | Custom of Expressions.generator_fn
 
 let generator_of_string str =
   match waveform_of_string str with
