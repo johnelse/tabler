@@ -4,6 +4,10 @@ type waveform =
   | Square
   | Triangle
 
-val waveform_of_string : string -> waveform option
+type generator =
+  | Waveform of waveform
+  | Custom of (float -> float)
 
-val string_of_waveform : waveform -> string
+val generator_of_string : string -> generator option
+
+val string_of_generator : generator -> string

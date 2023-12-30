@@ -17,3 +17,19 @@ let string_of_waveform = function
   | Sine -> "sine"
   | Square -> "square"
   | Triangle -> "triangle"
+
+type generator =
+  | Waveform of waveform
+  | Custom of (float -> float)
+
+let generator_of_string str =
+  match waveform_of_string str with
+  | Some waveform -> Some (Waveform waveform)
+  | None -> begin
+    (* TODO - create custom generator. *)
+    None
+  end
+
+let string_of_generator = function
+  | Waveform waveform -> string_of_waveform waveform
+  | Custom _ -> "custom"
