@@ -2,38 +2,49 @@ open Lua_api
 open OUnit2
 open Tabler_libs
 
-let test_good_start _ =
+let test_good_expression_1 _ =
   let state = LuaL.newstate () in
-  assert_equal (Expressions.load_start ~state ~expression:"x + x") true;
-  assert_equal (Expressions.call_start ~state ~value:5.0) 10.0
+ match Expressions.load ~state ~expression:"x + x" with
+  | Some fn -> assert_equal (fn 5.0) 10.0
+  | None -> assert_failure "Valid expression was rejected"
 
-let test_good_end _ =
+let test_good_expression_2 _ =
   let state = LuaL.newstate () in
-  assert_equal (Expressions.load_start ~state ~expression:"x * x") true;
-  assert_equal (Expressions.call_start ~state ~value:5.0) 25.0
+ match Expressions.load ~state ~expression:"x * x" with
+  | Some fn -> assert_equal (fn 5.0) 25.0
+  | None -> assert_failure "Valid expression was rejected"
 
-let test_invalid_start _ =
+let test_multiple_expressions _ =
   let state = LuaL.newstate () in
-  assert_equal (Expressions.load_start ~state ~expression:"e . 78 & 32 ko0") false
+ match Expressions.load ~state ~expression:"x + x" with
+  | Some fn1 -> begin
+    assert_equal (fn1 5.0) 10.0;
+   match Expressions.load ~state ~expression:"x * x" with
+   | Some fn2 -> begin
+     assert_equal (fn1 5.0) 10.0;
+     assert_equal (fn2 5.0) 25.0;
+   end
+   | None -> assert_failure "Valid expression was rejected"
+  end
+  | None -> assert_failure "Valid expression was rejected"
 
-let test_invalid_end _ =
+let test_invalid_expression _ =
   let state = LuaL.newstate () in
-  assert_equal (Expressions.load_start ~state ~expression:"f 98 23 ++ 6^^^") false
+  match Expressions.load ~state ~expression:"e . 78 & 32 ko0" with
+  | Some _ -> assert_failure "Invalid expression was accepted"
+  | None -> ()
 
-let test_non_float_start _ =
+let test_non_float_expression _ =
   let state = LuaL.newstate () in
-  assert_equal (Expressions.load_start ~state ~expression:"\"hi\"") false
-
-let test_non_float_end _ =
-  let state = LuaL.newstate () in
-  assert_equal (Expressions.load_start ~state ~expression:"true") false
+  match Expressions.load ~state ~expression:"\"hi\"" with
+  | Some _ -> assert_failure "Expression that doesn't return a float was accepted"
+  | None -> ()
 
 let suite =
   "expressions" >::: [
-    "good_start" >:: test_good_start;
-    "good_end" >:: test_good_end;
-    "invalid_start" >:: test_invalid_start;
-    "invalid_end" >:: test_invalid_end;
-    "non_float_start" >:: test_non_float_start;
-    "non_float_end" >:: test_non_float_end;
+    "good_expression_1" >:: test_good_expression_1;
+    "good_expression_2" >:: test_good_expression_2;
+    "multiple_expressions" >:: test_multiple_expressions;
+    "invalid_expression" >:: test_invalid_expression;
+    "non_float_expression" >:: test_non_float_expression;
   ]
