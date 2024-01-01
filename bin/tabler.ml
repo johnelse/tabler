@@ -2,7 +2,7 @@ open Cmdliner
 open Lua_api
 open Tabler_libs
 
-let tabler samples waves start_generator_str end_generator_str =
+let tabler samples waves start_generator_str end_generator_str _ =
   let state = LuaL.newstate () in
   LuaL.openlibs state;
   let start_generator =
@@ -33,12 +33,16 @@ let end_generator =
   let doc = "End generator" in
   Arg.(value & opt string "sine" & info ["end"] ~docv:"END" ~doc)
 
+let output_file =
+  let doc = "The file to write." in
+  Arg.(required & pos 0 (some string) None & info [] ~docv:"OUTPUTFILE" ~doc)
+
 let cmd =
   let doc = "Generate a wavetable" in
   let man = [
   ] in
   let info = Cmd.info "tabler" ~doc ~man in
-  let term = Term.(const tabler $ samples $ waves $ start_generator $ end_generator) in
+  let term = Term.(const tabler $ samples $ waves $ start_generator $ end_generator $ output_file) in
   Cmd.v info term
 
 let () =
