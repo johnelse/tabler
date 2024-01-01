@@ -2,7 +2,7 @@ open Cmdliner
 open Lua_api
 open Tabler_libs
 
-let tabler samples waves start_generator_str end_generator_str _ =
+let tabler samples waves start_generator_str end_generator_str output_file =
   let state = LuaL.newstate () in
   LuaL.openlibs state;
   let start_generator =
@@ -15,7 +15,10 @@ let tabler samples waves start_generator_str end_generator_str _ =
     | Some generator -> generator
     | None -> failwith ("Unrecognised generator: " ^ end_generator_str)
   in
-  ignore (samples, waves, start_generator, end_generator)
+  Generator.generate ~samples ~waves
+    ~start_generator
+    ~end_generator
+    ~output_file
 
 let samples =
   let doc = "Number of samples per waveform" in
@@ -46,4 +49,4 @@ let cmd =
   Cmd.v info term
 
 let () =
-  exit (Cmd.eval cmd)
+  exit (Cmd.eval_result cmd)
