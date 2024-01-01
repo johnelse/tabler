@@ -1,14 +1,17 @@
 open Cmdliner
+open Lua_api
 open Tabler_libs
 
 let tabler samples waves start_generator_str end_generator_str =
+  let state = LuaL.newstate () in
+  LuaL.openlibs state;
   let start_generator =
-    match Generator.generator_of_string start_generator_str with
+    match Generator.generator_of_string state start_generator_str with
     | Some generator -> generator
     | None -> failwith ("Unrecognised generator: " ^ start_generator_str)
   in
   let end_generator =
-    match Generator.generator_of_string end_generator_str with
+    match Generator.generator_of_string state end_generator_str with
     | Some generator -> generator
     | None -> failwith ("Unrecognised generator: " ^ end_generator_str)
   in

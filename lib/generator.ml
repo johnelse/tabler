@@ -22,12 +22,15 @@ type generator =
   | Waveform of waveform
   | Custom of Expressions.generator_fn
 
-let generator_of_string str =
+let generator_of_string state str =
   match waveform_of_string str with
   | Some waveform -> Some (Waveform waveform)
   | None -> begin
-    (* TODO - create custom generator. *)
-    None
+    try
+      match Expressions.load ~state ~expression:str with
+      | Some generator_fn -> Some (Custom generator_fn)
+      | None -> None
+    with _ -> None
   end
 
 let string_of_generator = function
