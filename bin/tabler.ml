@@ -15,10 +15,7 @@ let tabler samples waves start_generator_str end_generator_str =
     | Some generator -> generator
     | None -> failwith ("Unrecognised generator: " ^ end_generator_str)
   in
-  Printf.eprintf "samples = %d\n" samples;
-  Printf.eprintf "waves = %d\n" waves;
-  Printf.eprintf "start = %s\n" (Generator.string_of_generator start_generator);
-  Printf.eprintf "end = %s\n" (Generator.string_of_generator end_generator)
+  ignore (samples, waves, start_generator, end_generator)
 
 let samples =
   let doc = "Number of samples per waveform" in

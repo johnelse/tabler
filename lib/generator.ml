@@ -1,42 +1,3 @@
-type waveform =
-  | Saw
-  | Sine
-  | Square
-  | Triangle
-
-let waveform_of_string str =
-  match String.lowercase_ascii str with
-  | "saw" -> Some Saw
-  | "sine" -> Some Sine
-  | "square" -> Some Square
-  | "triangle" -> Some Triangle
-  | _ -> None
-
-let string_of_waveform = function
-  | Saw -> "saw"
-  | Sine -> "sine"
-  | Square -> "square"
-  | Triangle -> "triangle"
-
-type generator =
-  | Waveform of waveform
-  | Custom of Expressions.generator_fn
-
-let generator_of_string state str =
-  match waveform_of_string str with
-  | Some waveform -> Some (Waveform waveform)
-  | None -> begin
-    try
-      match Expressions.load ~state ~expression:str with
-      | Some generator_fn -> Some (Custom generator_fn)
-      | None -> None
-    with _ -> None
-  end
-
-let string_of_generator = function
-  | Waveform waveform -> string_of_waveform waveform
-  | Custom _ -> "custom"
-
 let pi_by_2 = Float.pi /. 2.0
 let three_pi_by_2 = 3. *. pi_by_2
 
@@ -59,9 +20,10 @@ let triangle x =
     else x /. pi_by_2 -. 3.0
   end
 
-let fn_of_generator = function
-  | Waveform Saw -> (fun x -> saw x)
-  | Waveform Sine -> (fun x -> sin x)
-  | Waveform Square -> (fun x -> square x)
-  | Waveform Triangle -> (fun x -> triangle x)
-  | Custom fn -> fn
+let generator_of_string state str =
+  match str with
+  | "saw" -> Some saw
+  | "sine" -> Some sin
+  | "square" -> Some square
+  | "triangle" -> Some triangle
+  | expression -> Expressions.load ~state ~expression
