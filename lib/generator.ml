@@ -17,7 +17,7 @@ let triangle x =
   else begin
     if x < three_pi_by_2
     then 2.0 -. x /. pi_by_2
-    else x /. pi_by_2 -. 3.0
+    else x /. pi_by_2 -. 4.0
   end
 
 let generator_of_string state str =
