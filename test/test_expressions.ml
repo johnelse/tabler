@@ -4,27 +4,27 @@ open Tabler_libs
 
 let test_good_expression_1 _ =
   let state = LuaL.newstate () in
- match Expressions.load ~state ~expression:"x + x" with
+  match Expressions.load ~state ~expression:"x + x" with
   | Some fn -> assert_equal (fn 5.0) 10.0
   | None -> assert_failure "Valid expression was rejected"
 
 let test_good_expression_2 _ =
   let state = LuaL.newstate () in
- match Expressions.load ~state ~expression:"x * x" with
+  match Expressions.load ~state ~expression:"x * x" with
   | Some fn -> assert_equal (fn 5.0) 25.0
   | None -> assert_failure "Valid expression was rejected"
 
 let test_multiple_expressions _ =
   let state = LuaL.newstate () in
- match Expressions.load ~state ~expression:"x + x" with
+  match Expressions.load ~state ~expression:"x + x" with
   | Some fn1 -> begin
     assert_equal (fn1 5.0) 10.0;
-   match Expressions.load ~state ~expression:"x * x" with
-   | Some fn2 -> begin
-     assert_equal (fn1 5.0) 10.0;
-     assert_equal (fn2 5.0) 25.0;
-   end
-   | None -> assert_failure "Valid expression was rejected"
+    match Expressions.load ~state ~expression:"x * x" with
+    | Some fn2 -> begin
+      assert_equal (fn1 5.0) 10.0;
+      assert_equal (fn2 5.0) 25.0;
+    end
+    | None -> assert_failure "Valid expression was rejected"
   end
   | None -> assert_failure "Valid expression was rejected"
 
