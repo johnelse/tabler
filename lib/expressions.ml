@@ -7,7 +7,7 @@ let test ~state ~fn_name =
   Lua.isnumber state (-1)
 
 let load_internal ~state ~fn_name ~expression =
-  let fn_str = Printf.sprintf "function %s(x) return %s end" fn_name expression in
+  let fn_str = Printf.sprintf "function %s(theta) return %s end" fn_name expression in
   if LuaL.dostring state fn_str
   then test ~state ~fn_name
   else false

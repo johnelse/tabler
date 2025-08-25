@@ -40,7 +40,7 @@ class wavetable_generator ~samples ~waves ~start_generator ~end_generator : Mm.A
     val mutable position = 0
     val mutable dead = false
 
-    method private omega_of_wave_position position =
+    method private theta_of_wave_position position =
       (float position) *. 2. *. Float.pi /. (float samples)
 
     method set_volume vol = volume <- vol
@@ -49,11 +49,11 @@ class wavetable_generator ~samples ~waves ~start_generator ~end_generator : Mm.A
     method fill buffer offset length =
       for buffer_position = 0 to length - 1 do
         let wave_position = position mod samples in
-        let omega = self#omega_of_wave_position wave_position in
+        let theta = self#theta_of_wave_position wave_position in
         let wavetable_position = (float (position / samples)) /. (float waves) in
         let value =
-          ((start_generator omega) *. (1. -. wavetable_position)
-          +. (end_generator omega) *. wavetable_position)
+          ((start_generator theta) *. (1. -. wavetable_position)
+          +. (end_generator theta) *. wavetable_position)
         in
         for channel = 0 to (Array.length buffer) - 1 do
           buffer.(channel).(offset + buffer_position) <- value

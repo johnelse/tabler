@@ -26,7 +26,7 @@ Create a waveform that morphs between a sine wave and another sine wave with
 three times the frequency:
 
 ```
-tabler --start=sine --end="math.sin(3 * x)" sine_3sine.wav
+tabler --start=sine --end="math.sin(3 * theta)" sine_3sine.wav
 ```
 
 Create a waveform with custom wave length and number of waveforms:
