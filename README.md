@@ -35,4 +35,17 @@ Create a waveform with custom wave length and number of waveforms:
 tabler --start=triangle --end=square --samples=1024 --waves=128 tri_square.wav
 ```
 
+The `--single-cycle` parameter can be used to simply generate single-cycle
+waveforms, i.e. "wavetables" where there is only one waveform. For example,
+
+```
+tabler --single-cycle=triangle tri_single_cycle.wav
+```
+
+is equivalent to
+
+```
+tabler --start=triangle --end=triangle --waves=1 tri_single_cycle.wav
+```
+
 For more information, and all optional parameters, see `tabler --help`.
