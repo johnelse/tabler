@@ -12,7 +12,7 @@ function cleanup() {
 }
 trap cleanup EXIT
 
-WAVES=("sine" "square" "triangle")
+WAVES=("saw" "sine" "square" "triangle")
 
 for WAVE in ${WAVES[@]}
 do
