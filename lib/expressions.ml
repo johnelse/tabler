@@ -12,9 +12,9 @@ let load_internal ~state ~fn_name ~expression =
   then test ~state ~fn_name
   else false
 
-let call ~state ~fn_name ~value =
+let call ~state ~fn_name ~theta =
   Lua.getglobal state fn_name;
-  Lua.pushnumber state value;
+  Lua.pushnumber state theta;
   let _ = Lua.call state 1 1 in
   Lua.tonumber state (-1)
 
@@ -29,5 +29,5 @@ let next_fn_name () =
 let load ~state ~expression =
   let fn_name = next_fn_name () in
   if load_internal ~state ~fn_name ~expression
-  then Some (fun value -> call ~state ~fn_name ~value)
+  then Some (fun theta -> call ~state ~fn_name ~theta)
   else None
