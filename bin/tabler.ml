@@ -23,7 +23,7 @@ let tabler samples waves single_cycle_generator_str start_generator_str end_gene
       | None -> failwith ("Unrecognised generator: " ^ start_generator_str)
     in
     let end_generator =
-      match Generator.generator_of_string state start_generator_str with
+      match Generator.generator_of_string state end_generator_str with
       | Some generator -> generator
       | None -> failwith ("Unrecognised generator: " ^ end_generator_str)
     in
