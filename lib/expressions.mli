@@ -1,5 +1,5 @@
 (** The type of generator functions. *)
-type generator_fn = float -> float
+type generator_fn = theta:float -> float
 
 (** Load an function using the supplied expression, and return a float -> float
     function which invokes this function. *)

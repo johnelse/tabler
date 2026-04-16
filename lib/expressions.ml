@@ -18,7 +18,7 @@ let call ~state ~fn_name ~theta =
   let _ = Lua.call state 1 1 in
   Lua.tonumber state (-1)
 
-type generator_fn = float -> float
+type generator_fn = theta:float -> float
 
 let next_fn_number = ref 0
 let next_fn_name () =
@@ -29,5 +29,5 @@ let next_fn_name () =
 let load ~state ~expression =
   let fn_name = next_fn_name () in
   if load_internal ~state ~fn_name ~expression
-  then Some (fun theta -> call ~state ~fn_name ~theta)
+  then Some (fun ~theta -> call ~state ~fn_name ~theta)
   else None
