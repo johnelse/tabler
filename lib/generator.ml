@@ -1,23 +1,23 @@
 let pi_by_2 = Float.pi /. 2.0
 let three_pi_by_2 = 3. *. pi_by_2
 
-let saw x =
-  if x < Float.pi
-  then x /. Float.pi
-  else x /. Float.pi -. 2.
+let saw theta =
+  if theta < Float.pi
+  then theta /. Float.pi
+  else theta /. Float.pi -. 2.
 
-let square x =
-  if x < Float.pi
+let square theta =
+  if theta < Float.pi
   then 1.
   else -1.
 
-let triangle x =
-  if x < pi_by_2
-  then x /. pi_by_2
+let triangle theta =
+  if theta < pi_by_2
+  then theta /. pi_by_2
   else begin
-    if x < three_pi_by_2
-    then 2.0 -. x /. pi_by_2
-    else x /. pi_by_2 -. 4.0
+    if theta < three_pi_by_2
+    then 2.0 -. theta /. pi_by_2
+    else theta /. pi_by_2 -. 4.0
   end
 
 let generator_of_string state str =
