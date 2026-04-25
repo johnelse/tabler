@@ -5,24 +5,35 @@ open Tabler_libs
 let test_good_expression_1 _ =
   let state = LuaL.newstate () in
   match Expressions.load ~state ~expression:"theta + theta" with
-  | Some fn -> assert_equal (fn ~theta:5.0) 10.0
+  | Some fn -> assert_equal (fn ~position:0.0 ~theta:5.0) 10.0
   | None -> assert_failure "Valid expression was rejected"
 
 let test_good_expression_2 _ =
   let state = LuaL.newstate () in
   match Expressions.load ~state ~expression:"theta * theta" with
-  | Some fn -> assert_equal (fn ~theta:5.0) 25.0
+  | Some fn -> assert_equal (fn ~position:0.0 ~theta:5.0) 25.0
+  | None -> assert_failure "Valid expression was rejected"
+
+let test_position_theta_expression _ =
+  let state = LuaL.newstate() in
+  match Expressions.load ~state ~expression:"position * theta" with
+  | Some fn -> begin
+    assert_equal (fn ~position:0.0 ~theta:0.5) 0.0;
+    assert_equal (fn ~position:0.5 ~theta:0.0) 0.0;
+    assert_equal (fn ~position:0.5 ~theta:0.5) 0.25;
+    assert_equal (fn ~position:0.5 ~theta:1.5) 0.75
+  end
   | None -> assert_failure "Valid expression was rejected"
 
 let test_multiple_expressions _ =
   let state = LuaL.newstate () in
   match Expressions.load ~state ~expression:"theta + theta" with
   | Some fn1 -> begin
-    assert_equal (fn1 ~theta:5.0) 10.0;
+    assert_equal (fn1 ~position:0.0 ~theta:5.0) 10.0;
     match Expressions.load ~state ~expression:"theta * theta" with
     | Some fn2 -> begin
-      assert_equal (fn1 ~theta:5.0) 10.0;
-      assert_equal (fn2 ~theta:5.0) 25.0;
+      assert_equal (fn1 ~position:0.0 ~theta:5.0) 10.0;
+      assert_equal (fn2 ~position:0.0 ~theta:5.0) 25.0;
     end
     | None -> assert_failure "Valid expression was rejected"
   end
@@ -44,6 +55,7 @@ let suite =
   "expressions" >::: [
     "good_expression_1" >:: test_good_expression_1;
     "good_expression_2" >:: test_good_expression_2;
+    "position_theta_expression" >:: test_position_theta_expression;
     "multiple_expressions" >:: test_multiple_expressions;
     "invalid_expression" >:: test_invalid_expression;
     "non_float_expression" >:: test_non_float_expression;

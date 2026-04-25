@@ -1,19 +1,24 @@
 let pi_by_2 = Float.pi /. 2.0
 let three_pi_by_2 = 3. *. pi_by_2
 
-let saw ~theta =
+let saw ~position ~theta =
+  ignore position;
   if theta < Float.pi
   then theta /. Float.pi
   else theta /. Float.pi -. 2.
 
-let sin ~theta = sin theta
+let sin ~position ~theta =
+  ignore position;
+  sin theta
 
-let square ~theta =
+let square ~position ~theta =
+  ignore position;
   if theta < Float.pi
   then 1.
   else -1.
 
-let triangle ~theta =
+let triangle ~position ~theta =
+  ignore position;
   if theta < pi_by_2
   then theta /. pi_by_2
   else begin
@@ -54,8 +59,8 @@ class wavetable_generator ~samples ~waves ~start_generator ~end_generator : Mm.A
         let theta = self#theta_of_wave_position wave_position in
         let wavetable_position = (float (position / samples)) /. (float waves) in
         let value =
-          ((start_generator ~theta) *. (1. -. wavetable_position)
-          +. (end_generator ~theta) *. wavetable_position)
+          ((start_generator ~position:wavetable_position ~theta) *. (1. -. wavetable_position)
+          +. (end_generator ~position:wavetable_position ~theta) *. wavetable_position)
         in
         for channel = 0 to (Array.length buffer) - 1 do
           buffer.(channel).(offset + buffer_position) <- value
