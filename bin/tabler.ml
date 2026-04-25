@@ -17,15 +17,23 @@ let tabler samples waves single_cycle_generator_str start_generator_str end_gene
     | None -> failwith ("Unrecognised generator: " ^ str)
   end
   | None -> begin
+    if start_generator_str = None
+    then failwith ("--single-cycle or --start must be specified");
+
+    let end_generator_str =
+      if end_generator_str = None
+      then start_generator_str
+      else end_generator_str
+    in
     let start_generator =
-      match Generator.generator_of_string state start_generator_str with
+      match Generator.generator_of_string state (Option.get start_generator_str) with
       | Some generator -> generator
-      | None -> failwith ("Unrecognised generator: " ^ start_generator_str)
+      | None -> failwith ("Unrecognised generator: " ^ (Option.get start_generator_str))
     in
     let end_generator =
-      match Generator.generator_of_string state end_generator_str with
+      match Generator.generator_of_string state (Option.get end_generator_str) with
       | Some generator -> generator
-      | None -> failwith ("Unrecognised generator: " ^ end_generator_str)
+      | None -> failwith ("Unrecognised generator: " ^ (Option.get end_generator_str))
     in
     Generator.generate ~samples ~waves
       ~start_generator
@@ -47,11 +55,11 @@ let single_cycle_generator =
 
 let start_generator =
   let doc = "Start generator" in
-  Arg.(value & opt string "sine" & info ["start"] ~docv:"START" ~doc)
+  Arg.(value & opt (some string) None & info ["start"] ~docv:"START" ~doc)
 
 let end_generator =
   let doc = "End generator" in
-  Arg.(value & opt string "sine" & info ["end"] ~docv:"END" ~doc)
+  Arg.(value & opt (some string) None & info ["end"] ~docv:"END" ~doc)
 
 let output_file =
   let doc = "The file to write." in
