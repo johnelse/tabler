@@ -13,3 +13,11 @@
     (source_tree scripts)
     (source_tree data))
   (action (run ./scripts/test_simple_interpolation.sh)))
+
+(rule
+  (alias runtest)
+  (deps
+    (:x ../../bin/tabler.exe)
+    (source_tree scripts)
+    (source_tree data))
+  (action (run ./scripts/test_position_variable.sh)))
