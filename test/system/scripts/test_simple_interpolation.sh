@@ -14,3 +14,4 @@ trap cleanup EXIT
 
 ../../bin/tabler.exe --start=sine --end="math.sin(3 * theta)" "$WORK/interpolation.wav"
 cmp data/interpolation.wav "$WORK/interpolation.wav"
+echo "OK"

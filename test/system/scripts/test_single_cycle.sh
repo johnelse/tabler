@@ -19,3 +19,4 @@ do
     ../../bin/tabler.exe --single-cycle=$WAVE "$WORK/single_cycle_${WAVE}.wav"
     cmp data/single_cycle_${WAVE}.wav "$WORK/single_cycle_${WAVE}.wav"
 done
+echo "OK"
